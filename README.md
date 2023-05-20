@@ -15,3 +15,5 @@
 6. (X) HTTP Host 헤더 값에 대소문자 섞기 (test.com → tEsT.cOm)
 
 ---
+Reference
+[GoodbyeDPI](https://github.com/ValdikSS/GoodbyeDPI)
