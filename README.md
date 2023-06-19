@@ -1,3 +1,5 @@
+# (중요) 아직 아무기능 없음
+
 # Rusty DPI
 네트워크 공부겸 DPI (심층 패킷 분석) 우회 툴
 
@@ -15,3 +17,5 @@
 6. (X) HTTP Host 헤더 값에 대소문자 섞기 (test.com → tEsT.cOm)
 
 ---
+Reference
+[GoodbyeDPI](https://github.com/ValdikSS/GoodbyeDPI)
