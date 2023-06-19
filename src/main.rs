@@ -5,10 +5,39 @@ use windivert::*;
 
 const DIVERT_BUF_SIZE: usize = 64 * 1024;
 
+fn is_subsequence(a: &Vec<u8>, b: Vec<u8>) -> Option<i32> {
+    for i in 0..a.len() {
+        if a[i]==b[0]{
+            let mut index=1;
+            if !(a.len() < i+b.len()) {
+                for j in 1..b.len() {
+                    if a[i+j] == b[j] {
+                        index+=1;
+                    }
+                }
+                if index==b.len() {
+                    println!("here is something!! : {}",a[i+b.len()]);
+                    return Some(10);
+                }
+                
+            }
+        }
+    }
+    return None;
+}
+
 fn decimal_to_hex(a: Vec<u8>) {
     println!("{:X?}",a);
 }
+fn hostname_filter(data: &Vec<u8>) -> Vec<u8>{
+    let query:Vec<u8> = vec![72, 111, 115, 116, 58, 32];
+    if is_subsequence(&data, query) {
+        //delete 32 element
+        println!("{:?}",data);
+    }
+    return 
 
+}
 fn main() {
     let handle = match WinDivert::new(
         "!loopback and (ip or tcp)",
@@ -28,10 +57,9 @@ fn main() {
 
     loop {
         //
-        let packet = match handle.recv(DIVERT_BUF_SIZE) {
+        let mut packet = match handle.recv(DIVERT_BUF_SIZE) {
             Ok(windivert_packet) => {
-                println!("recv packet {:?}", windivert_packet);
-                // decimal_to_hex(windivert_packet.data.clone());
+                // println!("recv packet {:?}", windivert_packet);
                 windivert_packet
             }
             Err(errors) => {
@@ -39,6 +67,8 @@ fn main() {
                 exit(1);
             }
         };
+
+        packet.data = hostname_filter(&packet.data);
 
         let packet_bytes = packet.data.clone();
         let ip_version = IpVersion::of_packet(&packet_bytes);
@@ -83,7 +113,6 @@ fn main() {
                         );
                     }
                     _ => {
-                        eprintln!("not supported other protocol");
                         let _ = handle.send(packet);
                         continue;
                     }
